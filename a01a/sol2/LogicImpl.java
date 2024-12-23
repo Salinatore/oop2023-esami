@@ -26,6 +26,10 @@ public class LogicImpl implements Logic {
             return Optional.empty();
         }
         this.marks.add(position);
+        for (Position pos : marks) {
+            System.out.print("[" + pos.x() + " " + pos.y() + "] ");
+        }
+        System.out.println();
         return Optional.of(this.marks.size());
     }
 

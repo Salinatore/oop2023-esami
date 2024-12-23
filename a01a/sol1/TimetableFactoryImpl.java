@@ -71,7 +71,8 @@ public class TimetableFactoryImpl implements TimetableFactory {
         return new TimetableData(
             table.activities(),
             table.days(),
-            (a, d) -> Math.min(table.getSingleData(a, d), bounds.apply(a, d)));
+            (a, d) -> Math.min(table.getSingleData(a, d), bounds.apply(a, d))
+        );
     }
     
 }

@@ -16,22 +16,25 @@ public class TimetableFactoryImpl implements TimetableFactory {
 
     private class TimetableImpl implements Timetable {
 
-        private final Map<String, List<String>> table = new HashMap<>();
+        private final Map<String, Map<String, Integer>> table = new HashMap<>();
 
         @Override
         public Timetable addHour(String activity, String day) {
             if(!this.table.containsKey(day)) {
-                this.table.put(day, new ArrayList<>());
+                this.table.put(day, new HashMap<>());
+                this.table.get(day).put(activity, 1);  
+            } else if (!this.table.get(day).containsKey(activity)) {
+                this.table.get(day).put(activity, 1);  
+            } else {
+                this.table.get(day).put(activity, this.table.get(day).get(activity) + 1);  
             }
-            this.table.get(day).add(activity);    
             return this;
         }
 
         @Override
         public Set<String> activities() {
             return this.table.entrySet().stream()
-                    .map(e -> e.getValue())
-                    .flatMap(l -> l.stream().distinct())
+                    .flatMap(e -> e.getValue().keySet().stream())
                     .collect(Collectors.toSet());
         }
 
@@ -42,19 +45,22 @@ public class TimetableFactoryImpl implements TimetableFactory {
 
         @Override
         public int getSingleData(String activity, String day) {
-            return (int) this.table.entrySet().stream()
-                    .filter(e -> e.getKey().equals(day))
-                    .flatMap(e -> e.getValue().stream())
-                    .filter(a -> a.equals(activity))
-                    .count();
+            if (this.table.containsKey(day) && this.table.get(day).containsKey(activity)) {
+                return this.table.get(day).get(activity);
+            } else {
+                return 0;
+            }
         }
 
         @Override
         public int sums(Set<String> activities, Set<String> days) {
-            return (int) this.table.entrySet().stream()
-                    .flatMap(e -> days.contains(e.getKey()) ? e.getValue().stream() : Collections.emptyList().stream())
-                    .filter(a -> activities.contains(a))
-                    .count();
+            int toReturn = 0;
+            for (String day : days) {
+                for (String activity : activities) {
+                    toReturn = toReturn + getSingleData(activity, day);
+                }
+            }
+            return toReturn;
         }
     }
     
@@ -78,12 +84,8 @@ public class TimetableFactoryImpl implements TimetableFactory {
     public Timetable cut(Timetable table, BiFunction<String, String, Integer> bounds) {
         Timetable toReturn = new TimetableImpl();
         for (var day : table.days()) {
-            for (var act : table.activities()) {
-                if (table.sums(Set.of(act), Set.of(day)) <= bounds.apply(act, day)) {
-                    for (int i = 0; i <table.sums(Set.of(act), Set.of(day)); i++) {
-                        toReturn.addHour(act, day);
-                    }
-                }
+            for (var activity : table.activities()) {
+         
             }
         }
         return toReturn;

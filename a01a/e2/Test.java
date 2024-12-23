@@ -25,7 +25,6 @@ public class Test {
 	 * - correttezza della parte opzionale: 2 punti
      */
 
-
     public static void main(String[] args) throws java.io.IOException {
         new GUI(10); 
     }
