@@ -30,14 +30,13 @@ public class Test {
 	 * - correttezza della parte obbligatoria: 10 punti
 	 * - correttezza della parte opzionale: 3 punti (ulteriore metodo della factory)
 	 * - qualità della soluzione: 4 punti (per buon design)
-	 * 
 	 */
 
 	private ListExtractorFactory factory;
 
 	@org.junit.Before
 	public void initFactory() {
-		// / this.factory = new ListExtractorFactoryImpl();
+		this.factory = new ListExtractorFactoryImpl();
 	}
 
 	@org.junit.Test
