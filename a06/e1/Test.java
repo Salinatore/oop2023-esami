@@ -34,8 +34,7 @@ public class Test {
 
 	@org.junit.Before
 	public void initFactory() {
-		// this.factory = new ZipCombinerFactoryImpl();
-
+		this.factory = new ZipCombinerFactoryImpl();
 	}
 
 	@org.junit.Test
