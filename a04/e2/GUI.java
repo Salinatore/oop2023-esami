@@ -2,7 +2,6 @@ package a04.e2;
 
 import javax.swing.*;
 import java.util.*;
-import java.util.List;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
@@ -24,7 +23,7 @@ public class GUI extends JFrame {
             var jb = (JButton)e.getSource();
             this.logic.hit(cells.get(jb));
             if (this.logic.isOver()) {
-                System.exit(0);
+                this.cells.keySet().stream().forEach(b -> b.setEnabled(false));
             }
         	this.reDraw();
         };
