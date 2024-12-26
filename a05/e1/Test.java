@@ -33,7 +33,7 @@ public class Test {
 
 	@org.junit.Before
 	public void initFactory() {
-		//this.factory = new BankAccountFactoryImpl();
+		this.factory = new BankAccountFactoryImpl();
 	}
 
 	@org.junit.Test

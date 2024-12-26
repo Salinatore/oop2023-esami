@@ -1,6 +1,13 @@
 package a05.e2;
 
+import java.lang.foreign.Linker.Option;
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class LogicImpl implements Logic {
 
@@ -35,30 +42,31 @@ public class LogicImpl implements Logic {
     }
 
     private Position computeEnemyPosition() {
-        Position nextPosition;
-        do  {
-            nextPosition = tryPosition(this.enemyPosition);
-        } while (
-                nextPosition.equals(this.enemyPosition) ||
-                neighbor(this.playerPosition, nextPosition) ||
-                !this.isInMap(nextPosition));
-        return nextPosition;
+        Random random = new Random();
+        List<Position> availableNeighbor = Stream.iterate(-1, i -> i + 1)
+                .limit(3)
+                .flatMap(i -> Stream.iterate(-1, n -> n + 1)
+                    .limit(3)
+                    .map(j -> new Position(this.enemyPosition.x() + i, this.enemyPosition.y() + j)))
+                .filter(p -> this.isInMap(p))
+                .filter(p -> !neighbor(p, this.playerPosition))
+                .toList();
+
+        
+        if (!availableNeighbor.isEmpty()) {
+            return availableNeighbor.get(random.nextInt(availableNeighbor.size()));
+        } else {
+            return this.enemyPosition;
+        }
     }
 
     private boolean isInMap(Position pos) {
         return pos.x() >= 0 && pos.x() < this.width && pos.y() >= 0 && pos.y() < this.width;
     }
 
-    private static Position tryPosition(Position pos) {
-        Random random = new Random();
-        return new Position(
-            (pos.x() + random.nextInt(3) - 1),
-            (pos.y() + random.nextInt(3) - 1));
-    }
-
     @Override
     public boolean isOver() {
-        return false;
+        return this.enemyPosition.equals(this.playerPosition);
     }
 
     @Override
