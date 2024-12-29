@@ -13,10 +13,9 @@ public class LogicImpl implements Logic {
     public LogicImpl(int width) {
         this.width = width;
         this.playerPosition = createEntity();
-        this.enemyPosition = createEntity();
-        while (neighbor(this.playerPosition, this.enemyPosition)) {
+        do {
             this.enemyPosition = createEntity();
-        }
+        } while (neighbor(this.playerPosition, this.enemyPosition));
     }
 
     private Position createEntity() {
