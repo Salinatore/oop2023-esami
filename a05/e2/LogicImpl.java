@@ -1,12 +1,7 @@
 package a05.e2;
 
-import java.lang.foreign.Linker.Option;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
-import java.util.Set;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class LogicImpl implements Logic {
@@ -37,7 +32,9 @@ public class LogicImpl implements Logic {
     public void hit(Position position) {
         if (neighbor(this.playerPosition, position) && !position.equals(this.playerPosition)) {
             this.playerPosition = position;
-            this.enemyPosition = this.computeEnemyPosition();
+            if (neighbor(this.enemyPosition, this.playerPosition)) {
+                this.enemyPosition = this.computeEnemyPosition();    
+            }
         } 
     }
 
