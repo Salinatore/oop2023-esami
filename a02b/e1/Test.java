@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Test {
 
-	/*
+	/* 
 	 * Implementare l'interfaccia RulesEngineFactory come indicato nel metodo
 	 * initFactory qui sotto. Realizza una factory per un concetto di "motore di regole",
 	 * catturato dall'interfaccia RulesEngine: essenzialmente è un sistema di riscrittura
@@ -35,7 +35,7 @@ public class Test {
 
 	@org.junit.Before
 	public void initFactory() {
-		// this.factory = new RulesEngineFactoryImpl();
+		this.factory = new RulesEngineFactoryImpl();
 	}
 
 	@org.junit.Test
